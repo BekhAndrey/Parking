@@ -65,6 +65,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<OrderHistory> history;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);

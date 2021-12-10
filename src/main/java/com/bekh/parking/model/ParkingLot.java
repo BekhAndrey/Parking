@@ -21,11 +21,11 @@ public class ParkingLot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parking_type_id", referencedColumnName = "id", nullable = false)
     private ParkingType parkingType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
