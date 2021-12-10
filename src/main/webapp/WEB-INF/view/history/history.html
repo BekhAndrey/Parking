@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css" >
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script th:src="@{/static/js/bootstrap.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"></link>
+    <script th:src="@{/static/js/functions.js}"></script>
+</head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/home}">Parking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link me-auto" th:href="@{/orders}" >Current bookings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        History
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/WEB-INF/view/history}">All</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/completed}">Completed</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/canceled}">Canceled</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/WEB-INF/view/account}" >Account</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="card" style="max-height: 550px; overflow: auto">
+            <header class="card-header">
+                <h4 class="card-title mb-4 mt-1">History</h4>
+            </header>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Vehicle Number</th>
+                    <th scope="col">Vehicle Type</th>
+                    <th scope="col">Parking lot id</th>
+                    <th scope="col">Enter date</th>
+                    <th scope="col">Exit date</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody th:each="order : ${ordersHistory}">
+                <tr>
+                    <td th:text="${order.getVehicleNumber()}">Number</td>
+                    <td th:text="${order.getVehicleType()}">Type</td>
+                    <td th:text="${order.getParkingLotId()}">Type</td>
+                    <td th:text="${order.getEnterDate()}">Enter</td>
+                    <td th:text="${order.getExitDate()}">Exit</td>
+                    <td th:text="${order.getPrice()}">Price</td>
+                    <td th:text="${order.getStatus()}" th:style="${order.getStatus() eq T(com.bekh.parking.model.Status).CANCELED}?'color:red':'color:green'">Status</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div> <!-- row.//-->
+</div>
+</body>
+</html>

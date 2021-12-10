@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookings</title>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css">
+    <script th:src="@{/static/js/jquery-3.6.0.js}"></script>
+    <script th:src="@{/static/js/bootstrap.js}"></script>
+    <script th:src="@{/static/js/functions.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/WEB-INF/view/admin}">Admin</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/admin/users}">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/admin/orders}">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/history}" aria-current="page">History</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row mt-5">
+            <div class="card" style="max-height: 550px; overflow: auto">
+                <header class="card-header">Bookings</header>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">User email</th>
+                        <th scope="col">Vehicle number</th>
+                        <th scope="col">Enter date</th>
+                        <th scope="col">Exit date</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                        <!--                        <th scope="col"></th>-->
+                    </tr>
+                    </thead>
+                    <tbody th:each="order : ${orders}">
+                    <tr>
+                        <td th:text="${order.getUser().getEmail()}">Email</td>
+                        <td th:text="${order.getParkingLot().getVehicle().getVehicleNumber()}">Number</td>
+                        <td th:text="${order.getParkingLot().getEnterDate()}">Enter</td>
+                        <td th:text="${order.getParkingLot().getExitDate()}">Exit</td>
+                        <td th:text="${order.getPrice()}">Price</td>
+                        <td th:text="${order.getStatus()}">Status</td>
+                        <td>
+                            <a th:href="@{/admin/orders/{id}/delete(id=${order.getId()})}">
+                                <button type="button" class="btn btn-primary btn-block"> Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+    </div> <!-- row.//-->
+</div>
+</body>
+</html>

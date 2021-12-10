@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit booking</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}" id="bootstrap-css">
+    <script th:src="@{/static/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/home}">Parking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link me-auto" th:href="@{/orders}" >Current bookings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        History
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/WEB-INF/view/history}">All</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/completed}">Completed</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/canceled}">Canceled</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/WEB-INF/view/account}" >Account</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <!--        <aside class="col-sm-3">-->
+            <div class="card">
+                <header class="card-header">
+                    <h4 class="card-title mb-4 mt-1">Confirm booking</h4>
+                </header>
+                <article class="card-body">
+                    <form th:method="put" th:action="@{/orders/{id}/edit(id=${id})}" th:object="${parkingLot}">
+                        <div class="form-row">
+                            <div class="col form-group">
+                                <h3>Order info</h3>
+                                <input type="text" class="form-control" hidden="hidden" th:field="*{id}">
+                                <label>Enter date </label>
+                                <div class="input-group date">
+                                    <label th:text="*{enterDate}"></label>
+                                    <input type="text" class="form-control" hidden="hidden" th:field="*{enterDate}">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <label>Exit date </label>
+                                <div class="input-group date">
+                                    <label th:text="*{exitDate}"></label>
+                                    <input type="text" class="form-control" hidden="hidden" th:field="*{exitDate}">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <label>Car number</label>
+                                <div class="input-group date">
+                                    <label th:text="*{vehicle.getVehicleNumber()}"></label>
+                                    <input type="text" class="form-control" hidden="hidden" th:value="*{vehicle.getVehicleNumber()}" name="vehicleNumber">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <label>Price</label>
+                                <div class="input-group date">
+                                    <label  th:text="${price}"></label>
+                                    <input type="text" class="form-control" hidden="hidden" th:value="${price}" name="price">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            </div> <!-- form-group end.// -->
+                        </div> <!-- form-row end.// -->
+                        <br>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block"> Edit</button>
+                            <a th:href="@{/home}">
+                                <button type="button" class="btn btn-secondary btn-block"> Cancel</button>
+                            </a>
+                        </div> <!-- form-group// -->
+                    </form>
+                </article>
+            </div> <!-- card.// -->
+
+            <!--        </aside> &lt;!&ndash; col.// &ndash;&gt;-->
+        </div> <!-- row.// -->
+
+    </div>
+</div>
+</body>
+</html>

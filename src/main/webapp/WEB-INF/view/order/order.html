@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking</title>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css" >
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script th:src="@{/static/js/bootstrap.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"></link>
+    <script th:src="@{/static/js/functions.js}"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/home}">Parking</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/orders}" >Current bookings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        History
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" th:href="@{/WEB-INF/view/history}">All</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/completed}">Completed</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history/canceled}">Canceled</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/WEB-INF/view/account}" >Account</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <aside class="col-sm-4">
+            <div class="card">
+                <header class="card-header">
+                    <h4 class="card-title mt-2">Booking info</h4>
+                </header>
+                <article class="card-body">
+                    <div class="col form-group">
+                        <label>Order id</label>
+                        <h3 th:text="${order.getId()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>User email</label>
+                        <h3 th:text="${order.getUser().getEmail()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Vehicle number</label>
+                        <h3 th:text="${order.getParkingLot().getVehicle().getVehicleNumber()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Vehicle type</label>
+                        <h3 th:text="${order.getParkingLot().getVehicle().getVehicleType()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Enter date</label>
+                        <h3 th:text="${order.getParkingLot().getEnterDate()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Exit date</label>
+                        <h3 th:text="${order.getParkingLot().getExitDate()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Price</label>
+                        <h3 th:text="${order.getPrice()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <label>Status</label>
+                        <h3 th:text="${order.getStatus()}"></h3>
+                    </div>
+                    <div class="col form-group">
+                        <a th:href="@{/orders/{orderId}/edit(orderId=${order.getId()})}" th:if="${order.getStatus() eq T(com.bekh.parking.model.Status).RESERVED}">
+                            <button class="btn btn-primary btn-block">Edit</button>
+                        </a>
+                        <label></label>
+                        <a th:href="@{/orders/{orderId}/cancel(orderId=${order.getId()})}" th:if="${order.getStatus() eq T(com.bekh.parking.model.Status).RESERVED}">
+                            <button class="btn btn-primary btn-block">Cancel</button>
+                        </a>
+                    </div>
+                </article> <!-- card-body end .// -->
+            </div> <!-- card.// -->
+        </aside> <!-- col.//-->
+    </div>
+</div>
+</body>
+</html>
