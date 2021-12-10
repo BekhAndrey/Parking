@@ -25,7 +25,7 @@ public class HistoryController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderHistoryService.updateUserHistoryStatus(loggedUser);
         model.addAttribute("ordersHistory", orderHistoryService.findAllByUser(loggedUser));
-        return "history";
+        return "history/history";
     }
 
     @GetMapping("/reserved")
@@ -33,7 +33,7 @@ public class HistoryController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderHistoryService.updateUserHistoryStatus(loggedUser);
         model.addAttribute("ordersHistory", orderHistoryService.findAllByUserAndStatus(loggedUser, Status.RESERVED));
-        return "history";
+        return "history/history";
     }
 
     @GetMapping("/ongoing")
@@ -41,7 +41,7 @@ public class HistoryController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderHistoryService.updateUserHistoryStatus(loggedUser);
         model.addAttribute("ordersHistory", orderHistoryService.findAllByUserAndStatus(loggedUser, Status.ONGOING));
-        return "history";
+        return "history/history";
     }
 
     @GetMapping("/completed")
@@ -49,7 +49,7 @@ public class HistoryController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderHistoryService.updateUserHistoryStatus(loggedUser);
         model.addAttribute("ordersHistory", orderHistoryService.findAllByUserAndStatus(loggedUser, Status.COMPLETED));
-        return "history";
+        return "history/history";
     }
 
     @GetMapping("/canceled")
@@ -57,6 +57,6 @@ public class HistoryController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderHistoryService.updateUserHistoryStatus(loggedUser);
         model.addAttribute("ordersHistory", orderHistoryService.findAllByUserAndStatus(loggedUser, Status.CANCELED));
-        return "history";
+        return "history/history";
     }
 }

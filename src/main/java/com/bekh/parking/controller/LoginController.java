@@ -37,14 +37,14 @@ public class LoginController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/login";
+        return "credentials/login";
     }
 
 
     @GetMapping("/registration")
     public String sighUpPage(Model model) {
         model.addAttribute("user", new User());
-        return "signup";
+        return "credentials/signup";
     }
 
     @PostMapping("/registration")
@@ -56,7 +56,7 @@ public class LoginController {
             errors.rejectValue("confirmPassword", "confirmPassword.dontMatch", "Passwords dont match.");
         }
         if (errors.hasErrors()) {
-            return "signup";
+            return "credentials/signup";
         }
         userService.create(user);
         String code = UUID.randomUUID().toString();
@@ -70,7 +70,7 @@ public class LoginController {
 
     @GetMapping("/registration/confirm-email")
     public String confirmEmailForm() {
-        return "confirmemail";
+        return "credentials/confirmemail";
     }
 
     @PostMapping("/registration/confirm-email")
@@ -85,12 +85,12 @@ public class LoginController {
         User userToApprove = userService.findUserByEmail(email);
         userToApprove.setApproved(true);
         userService.update(userToApprove);
-        return "redirect:/login";
+        return "credentials/login";
     }
 
     @GetMapping("auth/forgot-password")
     public String getCodeForm() {
-        return "getresetcode";
+        return "credentials/getresetcode";
     }
 
     @PostMapping("auth/forgot-password")
@@ -110,7 +110,7 @@ public class LoginController {
     @GetMapping("auth/reset")
     public String resetPasswordForm(Model model) {
         model.addAttribute("resetForm", new ResetForm());
-        return "resetpassword";
+        return "credentials/resetpassword";
     }
 
     @PostMapping("auth/reset")
@@ -127,11 +127,11 @@ public class LoginController {
             jedis.del(resetForm.getCode());
         }
         if (errors.hasErrors()) {
-            return "resetpassword";
+            return "credentials/resetpassword";
         }
         User userToUpdate = userService.findUserByEmail(email);
         userToUpdate.setPassword(resetForm.getNewPassword());
         userService.updatePassword(userToUpdate);
-        return "redirect:/login";
+        return "credentials/login";
     }
 }

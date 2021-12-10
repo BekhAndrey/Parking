@@ -26,20 +26,20 @@ public class HomeController {
         model.addAttribute("cars",
                 vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
         model.addAttribute("parkingLot", new ParkingLot());
-        return "mainpage";
+        return "order/mainpage";
     }
 
     @GetMapping("/account")
     public String accountPage(Authentication authentication, Model model) {
         model.addAttribute("currentUser", userService.findUserByEmail(authentication.getName()));
         model.addAttribute("vehicle", new Vehicle());
-        return "account";
+        return "account/account";
     }
 
     @GetMapping("/vehicles/add")
     public String addVehicleForm(Model model) {
         model.addAttribute("vehicle", new Vehicle());
-        return "addvehicle";
+        return "vehicle/addvehicle";
     }
 
     @PostMapping("/vehicles/add")
@@ -48,10 +48,10 @@ public class HomeController {
             errors.rejectValue("vehicleNumber", "vehicleNumber.notUnique", "Vehicle with such number already exists.");
         }
         if (errors.hasErrors()) {
-            return "addvehicle";
+            return "vehicle/addvehicle";
         }
         vehicle.setOwner(userService.findUserByEmail(authentication.getName()));
         vehicleService.save(vehicle);
-        return "redirect:/account";
+        return "account/account";
     }
 }

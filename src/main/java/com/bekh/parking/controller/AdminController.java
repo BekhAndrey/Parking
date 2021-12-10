@@ -37,12 +37,12 @@ public class AdminController {
     public String adminPanelUsers(Model model) {
         model.addAttribute("users", userService.findAllByRole(UserRole.ROLE_USER));
         model.addAttribute("vehicles", vehicleService.findAll());
-        return "adminpanel";
+        return "admin/adminpanel";
     }
 
     @GetMapping("/users/{id}/delete")
     public String confirmDeleteUser(@PathVariable("id") Long id) {
-        return "confirmdeleteuser";
+        return "account/confirmdeleteuser";
     }
 
     @DeleteMapping("/users/{id}/delete")
@@ -66,7 +66,7 @@ public class AdminController {
 
     @GetMapping("/vehicles/{id}/delete")
     public String confirmDeleteVehicle(@PathVariable("id") Long id) {
-        return "confirmdeletevehicle";
+        return "vehicle/confirmdeletevehicle";
     }
 
     @DeleteMapping("/vehicles/{id}/delete")
@@ -83,12 +83,12 @@ public class AdminController {
     @GetMapping("/orders")
     public String adminPanelOrders(Model model) {
         model.addAttribute("orders", orderService.findAll());
-        return "adminpanelorders";
+        return "admin/adminpanelorders";
     }
 
     @GetMapping("/orders/{id}/delete")
     public String confirmDeleteOrder(@PathVariable("id") Long id) {
-        return "confirmdeleteorder";
+        return "order/confirmdeleteorder";
     }
 
     @DeleteMapping("/orders/{id}/delete")
@@ -102,12 +102,12 @@ public class AdminController {
     @GetMapping("/history")
     public String adminPanelHistory(Model model) {
         model.addAttribute("histories", orderHistoryService.findAll());
-        return "adminpanelhistories";
+        return "admin/adminpanelhistories";
     }
 
     @GetMapping("/history/{id}/delete")
     public String confirmDeleteHistory(@PathVariable("id") Long id) {
-        return "confirmdeletehistory";
+        return "history/confirmdeletehistory";
     }
 
     @DeleteMapping("/history/{id}/delete")

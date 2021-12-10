@@ -48,7 +48,7 @@ public class OrderController {
             errors.rejectValue("enterDate", "isAfter", "Enter date cannot be after exit date.");
             model.addAttribute("cars",
                     vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
-            return "mainpage";
+            return "order/mainpage";
         }
         for (LocalDate date = parkingLot.getEnterDate(); date.isBefore(parkingLot.getExitDate().plusDays(1)); date = date.plusDays(1)) {
             if (parkingLotService.findAllCurrentlyParked(date)
@@ -61,7 +61,7 @@ public class OrderController {
             if (errors.hasErrors()) {
                 model.addAttribute("cars",
                         vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
-                return "mainpage";
+                return "order/mainpage";
             }
         }
         long parkingDuration = DAYS.between(parkingLot.getEnterDate(), parkingLot.getExitDate());
@@ -82,7 +82,7 @@ public class OrderController {
         String price = (Math.round((parkingDuration * 36 * multiplier) * 100) / 100) + " BYN";
         model.addAttribute("price", price);
         model.addAttribute("parkingLot", parkingLot);
-        return "confirmbooking";
+        return "order/confirmbooking";
     }
 
     @PostMapping("/confirm")
@@ -115,7 +115,7 @@ public class OrderController {
         User loggedUser = userService.findUserByEmail(authentication.getName());
         orderService.updateUserOrdersStatus(loggedUser);
         model.addAttribute("orders", orderService.findByUser(loggedUser));
-        return "orders";
+        return "order/orders";
     }
 
     @GetMapping("/{id}")
@@ -124,7 +124,7 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         model.addAttribute("order", orderService.findById(id));
-        return "order";
+        return "order/order";
     }
 
     @GetMapping("/{id}/edit")
@@ -138,7 +138,7 @@ public class OrderController {
         model.addAttribute("order", orderService.findById(id));
         model.addAttribute("car", orderService.findById(id).getParkingLot().getVehicle());
         model.addAttribute("parkingLot", parkingLotService.findById(orderService.findById(id).getParkingLot().getId()));
-        return "editorder";
+        return "order/editorder";
     }
 
     @PostMapping("/{id}/edit/confirm")
@@ -150,7 +150,7 @@ public class OrderController {
             errors.rejectValue("enterDate", "isAfter", "Enter date cannot be after exit date.");
             model.addAttribute("car",
                     vehicleToPark);
-            return "editorder";
+            return "order/editorder";
         }
         for (LocalDate date = parkingLot.getEnterDate(); date.isBefore(parkingLot.getExitDate().plusDays(1)); date = date.plusDays(1)) {
             List<ParkingLot> lots = parkingLotService.findCurrentlyParkedByVehicleNumber(date, carNumber);
@@ -158,14 +158,14 @@ public class OrderController {
                 errors.rejectValue("enterDate", "exists", "There is another booking for this car during this period.");
                 model.addAttribute("car",
                         vehicleToPark);
-                return "editorder";
+                return "order/editorder";
             }
             if (parkingLotService.findAllCurrentlyParked(date)
                     .size() > parkingTypeService.findByType(vehicleToPark.getVehicleType()).getLotsAmount()) {
                 errors.rejectValue("enterDate", "noLots", "No parking lots available for this period.");
                 model.addAttribute("car",
                         vehicleToPark);
-                return "editorder";
+                return "order/editorder";
             }
         }
         long parkingDuration = DAYS.between(parkingLot.getEnterDate(), parkingLot.getExitDate());
@@ -186,7 +186,7 @@ public class OrderController {
         String price = (Math.round((parkingDuration * 36 * multiplier) * 100) / 100) + " BYN";
         model.addAttribute("price", price);
         model.addAttribute("parkingLot", parkingLot);
-        return "confirmedit";
+        return "order/confirmedit";
     }
 
     @PutMapping("/{id}/edit")
@@ -202,7 +202,7 @@ public class OrderController {
         orderHistory.setEnterDate(lotToUpdate.getEnterDate());
         orderHistory.setExitDate(lotToUpdate.getExitDate());
         orderHistoryService.save(orderHistory);
-        return "redirect:/orders";
+        return "order/orders";
     }
 
     @GetMapping("/orders/{id}/cancel")
@@ -216,7 +216,7 @@ public class OrderController {
         Order order = orderService.findById(id);
         model.addAttribute("order", order);
         model.addAttribute("parkingLot", parkingLotService.findById(order.getParkingLot().getId()));
-        return "confirmcancel";
+        return "order/confirmcancel";
     }
 
     @DeleteMapping("/{id}/cancel")
@@ -227,6 +227,6 @@ public class OrderController {
         OrderHistory orderHistory = orderHistoryService.findByParkingLotId(parkingLot.getId());
         orderHistory.setStatus(Status.CANCELED);
         orderHistoryService.save(orderHistory);
-        return "redirect:/orders";
+        return "order/orders";
     }
 }
