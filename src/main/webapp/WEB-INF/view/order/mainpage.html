@@ -30,7 +30,7 @@
                         History
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/WEB-INF/view/history}">All</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history}">All</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
@@ -39,14 +39,14 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/WEB-INF/view/account}" >Account</a>
+                    <a class="nav-link" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-4">
             <!--        <aside class="col-sm-3">-->
             <div class="card">
@@ -59,7 +59,7 @@
                             <div class="col form-group">
                                 <label>Enter date </label>
                                 <div class="input-group date">
-                                    <input type="text" class="form-control enterdatepicker" th:field="*{enterDate}">
+                                    <input type="text" autocomplete="off" class="form-control enterdatepicker" th:field="*{enterDate}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -69,7 +69,7 @@
                                 </div>
                                 <label>Exit date </label>
                                 <div class="input-group date">
-                                    <input type="text" class="form-control exitdatepicker" th:field="*{exitDate}">
+                                    <input type="text" autocomplete="off" class="form-control exitdatepicker" th:field="*{exitDate}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>

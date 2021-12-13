@@ -6,7 +6,7 @@ $(document).ready(function () {
         todayBtn:  1,
         autoclose: true,
         format: "dd/mm/yyyy",
-        startDate: enter
+        startDate: enter,
     }).on('changeDate', function (selected) {
         var minDate = new Date(selected.date.valueOf());
         minDate.setDate(minDate.getDate()+1);
@@ -21,6 +21,7 @@ $(document).ready(function () {
         startDate: exit
     }).on('changeDate', function (selected) {
         var maxDate = new Date(selected.date.valueOf());
+        maxDate.setDate(maxDate.getDate()-1);
         $('.enterdatepicker').datepicker('setEndDate', maxDate);
     });
 

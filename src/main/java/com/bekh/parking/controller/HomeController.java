@@ -45,7 +45,8 @@ public class HomeController {
     @PostMapping("/vehicles/add")
     public String addVehicle(@Valid Vehicle vehicle, Errors errors, Authentication authentication) {
         if (vehicleService.findByVehicleNumber(vehicle.getVehicleNumber()) != null) {
-            errors.rejectValue("vehicleNumber", "vehicleNumber.notUnique", "Vehicle with such number already exists.");
+            errors.rejectValue("vehicleNumber", "vehicleNumber.notUnique",
+                    "Vehicle with such number already exists.");
         }
         if (errors.hasErrors()) {
             return "vehicle/addvehicle";

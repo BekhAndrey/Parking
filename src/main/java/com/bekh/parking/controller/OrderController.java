@@ -50,13 +50,16 @@ public class OrderController {
                     vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
             return "order/mainpage";
         }
-        for (LocalDate date = parkingLot.getEnterDate(); date.isBefore(parkingLot.getExitDate().plusDays(1)); date = date.plusDays(1)) {
+        for (LocalDate date = parkingLot.getEnterDate();
+             date.isBefore(parkingLot.getExitDate().plusDays(1));
+             date = date.plusDays(1)) {
             if (parkingLotService.findAllCurrentlyParked(date)
                     .size() > parkingTypeService.findByType(vehicleToPark.getVehicleType()).getLotsAmount()) {
                 errors.rejectValue("enterDate", "noLots", "No parking lots available for this period.");
             }
             if (parkingLotService.findCurrentlyParkedByVehicleNumber(date, carNumber).size() > 0) {
-                errors.rejectValue("enterDate", "exists", "There is another booking for this car during this period.");
+                errors.rejectValue("enterDate", "exists",
+                        "There is another booking for this car during this period.");
             }
             if (errors.hasErrors()) {
                 model.addAttribute("cars",
@@ -79,14 +82,15 @@ public class OrderController {
                 break;
         }
         parkingLot.setVehicle(vehicleToPark);
-        String price = (Math.round((parkingDuration * 36 * multiplier) * 100) / 100) + " BYN";
+        String price = (Math.round((parkingDuration * 5 * multiplier) * 100) / 100) + " BYN";
         model.addAttribute("price", price);
         model.addAttribute("parkingLot", parkingLot);
         return "order/confirmbooking";
     }
 
     @PostMapping("/confirm")
-    public String confirmOrder(Authentication authentication, ParkingLot parkingLot, String price, String vehicleNumber) {
+    public String confirmOrder(Authentication authentication, ParkingLot parkingLot,
+                               String price, String vehicleNumber) {
         Vehicle vehicleToPark = vehicleService.findByVehicleNumber(vehicleNumber);
         parkingLot.setVehicle(vehicleToPark);
         parkingLot.setParkingType(parkingTypeService.findByType(vehicleToPark.getVehicleType()));
@@ -124,7 +128,7 @@ public class OrderController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         model.addAttribute("order", orderService.findById(id));
-        return "order/order";
+        return "order/orderpage";
     }
 
     @GetMapping("/{id}/edit")
@@ -183,7 +187,7 @@ public class OrderController {
                 break;
         }
         parkingLot.setVehicle(vehicleToPark);
-        String price = (Math.round((parkingDuration * 36 * multiplier) * 100) / 100) + " BYN";
+        String price = (Math.round((parkingDuration * 5 * multiplier) * 100) / 100) + " BYN";
         model.addAttribute("price", price);
         model.addAttribute("parkingLot", parkingLot);
         return "order/confirmedit";
@@ -202,10 +206,10 @@ public class OrderController {
         orderHistory.setEnterDate(lotToUpdate.getEnterDate());
         orderHistory.setExitDate(lotToUpdate.getExitDate());
         orderHistoryService.save(orderHistory);
-        return "order/orders";
+        return "redirect:/orders";
     }
 
-    @GetMapping("/orders/{id}/cancel")
+    @GetMapping("/{id}/cancel")
     public String confirmCancelOrder(@PathVariable("id") Long id, Model model, Authentication authentication) {
         if (!orderService.findById(id).getUser().getEmail().equals(authentication.getName())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -220,13 +224,13 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}/cancel")
-    public String cancelOrder(@PathVariable("id") Long id, ParkingLot parkingLot, Model model) {
+    public String cancelOrder(@PathVariable("id") Long id, ParkingLot parkingLot) {
         Order order = orderService.findByParkingLot(parkingLot);
         orderService.delete(order);
         parkingLotService.delete(parkingLotService.findById(parkingLot.getId()));
         OrderHistory orderHistory = orderHistoryService.findByParkingLotId(parkingLot.getId());
         orderHistory.setStatus(Status.CANCELED);
         orderHistoryService.save(orderHistory);
-        return "order/orders";
+        return "redirect:/orders";
     }
 }

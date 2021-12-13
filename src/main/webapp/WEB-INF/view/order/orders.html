@@ -29,7 +29,7 @@
                         History
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/WEB-INF/view/history}">All</a></li>
+                        <li><a class="dropdown-item" th:href="@{/history}">All</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
@@ -38,14 +38,14 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/WEB-INF/view/account}" >Account</a>
+                    <a class="nav-link" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container">
-    <div class="row">
+    <div class="row mt-5">
             <div class="card" style="max-height: 550px; overflow: auto">
                 <header class="card-header">
                     <h4 class="card-title mb-4 mt-1">Bookings</h4>
@@ -69,7 +69,7 @@
                         <td th:text="${order.getParkingLot().getEnterDate()}">Enter date</td>
                         <td th:text="${order.getParkingLot().getExitDate()}">Exit date</td>
                         <td th:text="${order.getPrice()}">Price</td>
-                        <td th:text="${order.getStatus()}" th:style="${order.getStatus() eq T(com.bekh.parking.model.Status).ONGOING}?'color:yellow':'color:black'">Status</td>
+                        <td th:text="${order.getStatus()}" th:style="${order.getStatus() eq T(com.bekh.parking.model.Status).ONGOING}?'color:orange':'color:black'">Status</td>
 
                         <td>
                             <a th:href="@{/orders/{orderId}(orderId=${order.getId()})}">
