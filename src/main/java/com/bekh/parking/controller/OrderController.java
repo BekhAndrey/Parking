@@ -42,6 +42,18 @@ public class OrderController {
     @PostMapping("/add")
     public String createParkingLot(Authentication authentication, @Valid ParkingLot parkingLot,
                                    Errors errors, String carNumber, Model model) {
+        if(parkingLot.getEnterDate()==null){
+            errors.rejectValue("enterDate", "null", "Enter date cannot be empty.");
+            model.addAttribute("cars",
+                    vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
+            return "order/mainpage";
+        }
+        if(parkingLot.getExitDate()==null){
+            errors.rejectValue("exitDate", "null", "Exit date cannot be empty.");
+            model.addAttribute("cars",
+                    vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
+            return "order/mainpage";
+        }
         double multiplier = 0;
         Vehicle vehicleToPark = vehicleService.findByVehicleNumber(carNumber);
         if (parkingLot.getEnterDate().isAfter(parkingLot.getExitDate())) {
@@ -205,6 +217,7 @@ public class OrderController {
         OrderHistory orderHistory = orderHistoryService.findByParkingLotId(lotToUpdate.getId());
         orderHistory.setEnterDate(lotToUpdate.getEnterDate());
         orderHistory.setExitDate(lotToUpdate.getExitDate());
+        orderHistory.setPrice(price);
         orderHistoryService.save(orderHistory);
         return "redirect:/orders";
     }

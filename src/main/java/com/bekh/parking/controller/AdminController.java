@@ -48,19 +48,23 @@ public class AdminController {
     @DeleteMapping("/users/{id}/delete")
     public String deleteUser(@PathVariable("id") Long id) {
         User user = userService.findById(id);
+        for (OrderHistory orderHistory : user.getHistory()) {
+            orderHistoryService.delete(orderHistory);
+        }
         for (Order order : orderService.findByUser(user)) {
             orderService.delete(order);
         }
-        for (Vehicle vehicle : user.getVehicles()) {
+        for (Vehicle vehicle : vehicleService.findAllByOwnerId(user.getId())) {
             for (ParkingLot parkingLot : parkingLotService.findAllByVehicle(vehicle)) {
                 parkingLotService.delete(parkingLot);
             }
             vehicleService.delete(vehicle);
         }
-        for (OrderHistory orderHistory : user.getHistory()) {
-            orderHistoryService.delete(orderHistory);
+        try{
+            userService.delete(user);
+        } catch (Throwable e){
+            return "redirect:/admin/users";
         }
-        userService.delete(user);
         return "redirect:/admin";
     }
 

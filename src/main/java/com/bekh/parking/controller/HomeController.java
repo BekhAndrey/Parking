@@ -53,6 +53,6 @@ public class HomeController {
         }
         vehicle.setOwner(userService.findUserByEmail(authentication.getName()));
         vehicleService.save(vehicle);
-        return "account/account";
+        return "redirect:/account";
     }
 }

@@ -74,6 +74,9 @@
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
+                                <div style="color: red" th:if="${#fields.hasErrors('exitDate')}"
+                                     th:errors="*{exitDate}">Exit Date error
+                                </div>
                                 <label>Car number</label>
                                 <select th:if="${cars.size() > 0}" class="form-select" aria-label="Default select example"
                                                         name="carNumber">
