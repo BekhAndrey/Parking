@@ -47,12 +47,13 @@ public class OrderHistoryService {
     public void updateUserHistoryStatus(User user){
         List<OrderHistory> orders = orderHistoryRepository.findAllByUser(user, Sort.by("enterDate").descending());
         for(OrderHistory order: orders){
-            if(order.getStatus().equals(Status.RESERVED)&& order.getEnterDate().equals(LocalDate.now())){
+            if(order.getStatus().equals(Status.RESERVED)&&
+                    (order.getEnterDate().equals(LocalDate.now()) || order.getEnterDate().isBefore(LocalDate.now()))){
                 order.setStatus(Status.ONGOING);
                 orderHistoryRepository.save(order);
                 continue;
             }
-            if(order.getStatus().equals(Status.ONGOING)&& order.getExitDate().equals(LocalDate.now())){
+            if(order.getStatus().equals(Status.ONGOING)&& (order.getExitDate().equals(LocalDate.now()) || order.getExitDate().isBefore(LocalDate.now()))){
                 order.setStatus(Status.COMPLETED);
                 orderHistoryRepository.save(order);
             }

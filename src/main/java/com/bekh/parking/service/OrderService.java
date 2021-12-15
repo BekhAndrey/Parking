@@ -56,12 +56,14 @@ public class OrderService {
     public void updateUserOrdersStatus(User user) {
         List<Order> orders = orderRepository.findByUser(user);
         for (Order order : orders) {
-            if (order.getParkingLot().getEnterDate().equals(LocalDate.now())) {
+            if (order.getParkingLot().getEnterDate().equals(LocalDate.now())
+                    || order.getParkingLot().getEnterDate().isBefore(LocalDate.now())) {
                 order.setStatus(Status.ONGOING);
                 orderRepository.save(order);
                 continue;
             }
-            if(order.getParkingLot().getExitDate().equals(LocalDate.now())){
+            if(order.getParkingLot().getExitDate().equals(LocalDate.now())
+                    || order.getParkingLot().getExitDate().isBefore(LocalDate.now())){
                 orderRepository.delete(order);
                 parkingLotRepository.delete(order.getParkingLot());
             }
