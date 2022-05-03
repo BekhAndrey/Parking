@@ -33,6 +33,9 @@ public class Vehicle {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
     @Column(name = "vehicle_name")
     @NotBlank(message = "Name cannot be empty.")
     private String vehicleName;

@@ -31,6 +31,8 @@ public class Order {
 
     private String price;
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
 
     @Enumerated(EnumType.STRING)
     private Status status;

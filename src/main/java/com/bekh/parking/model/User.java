@@ -54,6 +54,9 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDate updatedAt = LocalDate.now();
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
 

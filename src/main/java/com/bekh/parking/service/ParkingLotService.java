@@ -1,9 +1,7 @@
 package com.bekh.parking.service;
 
-import com.bekh.parking.model.Order;
 import com.bekh.parking.model.ParkingLot;
 import com.bekh.parking.model.Vehicle;
-import com.bekh.parking.repository.OrderRepository;
 import com.bekh.parking.repository.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +18,11 @@ public class ParkingLotService {
     private ParkingLotRepository parkingLotRepository;
 
     public List<ParkingLot> findAll() {
-        return (List<ParkingLot>) parkingLotRepository.findAll();
+        return (List<ParkingLot>) parkingLotRepository.findAllByDeleted(false);
     }
 
     public ParkingLot findById(Long id) {
-        return parkingLotRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
+        return parkingLotRepository.findByIdAndDeleted(id, false).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public void save(ParkingLot parkingLot) {
@@ -32,11 +30,12 @@ public class ParkingLotService {
     }
 
     public void delete(ParkingLot parkingLot) {
-        parkingLotRepository.delete(parkingLot);
+        parkingLot.setDeleted(true);
+        parkingLotRepository.save(parkingLot);
     }
 
     public List<ParkingLot> findAllCurrentlyParked(LocalDate date) {
-        return parkingLotRepository.findAllCurrentlyParked(date);
+        return (List<ParkingLot>) parkingLotRepository.findAllCurrentlyParked(date);
     }
 
     public List<ParkingLot> findCurrentlyParkedByVehicleNumber(LocalDate date, String carNumber) {
@@ -44,6 +43,6 @@ public class ParkingLotService {
     }
 
     public List<ParkingLot> findAllByVehicle(Vehicle vehicle) {
-        return parkingLotRepository.findAllByVehicle(vehicle);
+        return parkingLotRepository.findAllByVehicleAndDeleted(vehicle, false);
     }
 }

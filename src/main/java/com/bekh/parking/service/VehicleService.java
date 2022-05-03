@@ -1,8 +1,6 @@
 package com.bekh.parking.service;
 
-import com.bekh.parking.model.ParkingType;
 import com.bekh.parking.model.Vehicle;
-import com.bekh.parking.repository.ParkingTypeRepository;
 import com.bekh.parking.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +16,11 @@ public class VehicleService {
     private VehicleRepository vehicleRepository;
 
     public List<Vehicle> findAll() {
-        return (List<Vehicle>) vehicleRepository.findAll();
+        return vehicleRepository.findAllByDeleted(false);
     }
 
     public Vehicle findById(Long id) {
-        return vehicleRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
+        return vehicleRepository.findByIdAndDeleted(id, false).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public void save(Vehicle vehicle){
@@ -30,14 +28,15 @@ public class VehicleService {
     }
 
     public void delete(Vehicle vehicle) {
-        vehicleRepository.delete(vehicle);
+        vehicle.setDeleted(true);
+        vehicleRepository.save(vehicle);
     }
 
     public List<Vehicle> findAllByOwnerId(Long id) {
-        return (List<Vehicle>) vehicleRepository.findAllByOwnerId(id);
+        return vehicleRepository.findAllByOwnerIdAndDeleted(id, false);
     }
 
     public Vehicle findByVehicleNumber(String vehicleNumber) {
-        return vehicleRepository.findByVehicleNumber(vehicleNumber);
+        return vehicleRepository.findByVehicleNumberAndDeleted(vehicleNumber, false);
     }
 }

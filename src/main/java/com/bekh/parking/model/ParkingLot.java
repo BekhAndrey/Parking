@@ -32,6 +32,9 @@ public class ParkingLot {
     @OneToOne(mappedBy = "parkingLot")
     private Order order;
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
     @Column(name = "enter_date")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate enterDate;

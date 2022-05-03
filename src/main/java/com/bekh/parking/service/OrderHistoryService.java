@@ -1,12 +1,10 @@
 package com.bekh.parking.service;
 
-import com.bekh.parking.model.Order;
 import com.bekh.parking.model.OrderHistory;
 import com.bekh.parking.model.Status;
 import com.bekh.parking.model.User;
 import com.bekh.parking.repository.OrderHistoryRepository;
-import com.bekh.parking.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,16 +14,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service("orderHistoryService")
+@RequiredArgsConstructor
 public class OrderHistoryService {
-    @Autowired
-    private OrderHistoryRepository orderHistoryRepository;
+
+    private final OrderHistoryRepository orderHistoryRepository;
 
     public List<OrderHistory> findAll() {
-        return (List<OrderHistory>) orderHistoryRepository.findAll();
+        return orderHistoryRepository.findAllByDeleted(false);
     }
 
     public OrderHistory findById(Long id) {
-        return orderHistoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
+        return orderHistoryRepository.findByIdAndDeleted(id, false).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public void save(OrderHistory orderHistory) {
@@ -33,34 +32,33 @@ public class OrderHistoryService {
     }
 
     public void delete(OrderHistory orderHistory) {
-        orderHistoryRepository.delete(orderHistory);
+        orderHistory.setDeleted(true);
+        orderHistoryRepository.save(orderHistory);
     }
 
     public OrderHistory findByParkingLotId(Long id) {
-        return orderHistoryRepository.findByParkingLotId(id);
+        return orderHistoryRepository.findByParkingLotIdAndDeleted(id, false).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public List<OrderHistory> findAllByUser(User user) {
-        return (List<OrderHistory>) orderHistoryRepository.findAllByUser(user, Sort.by("enterDate").descending());
+        return orderHistoryRepository.findAllByUserAndDeleted(user, Sort.by("enterDate").descending(), false);
     }
 
-    public void updateUserHistoryStatus(User user){
-        List<OrderHistory> orders = orderHistoryRepository.findAllByUser(user, Sort.by("enterDate").descending());
-        for(OrderHistory order: orders){
-            if(order.getStatus().equals(Status.RESERVED)&&
-                    (order.getEnterDate().equals(LocalDate.now()) || order.getEnterDate().isBefore(LocalDate.now()))){
+    public void updateUserHistoryStatus(User user) {
+        List<OrderHistory> orders = orderHistoryRepository.findAllByUserAndDeleted(user, Sort.by("enterDate").descending(), false);
+        for (OrderHistory order : orders) {
+            if (order.getStatus().equals(Status.RESERVED) &&
+                    (order.getEnterDate().equals(LocalDate.now()) || order.getEnterDate().isBefore(LocalDate.now()))) {
                 order.setStatus(Status.ONGOING);
-                orderHistoryRepository.save(order);
-                continue;
             }
-            if(order.getStatus().equals(Status.ONGOING)&& (order.getExitDate().equals(LocalDate.now()) || order.getExitDate().isBefore(LocalDate.now()))){
+            if (order.getStatus().equals(Status.ONGOING) && (order.getExitDate().equals(LocalDate.now()) || order.getExitDate().isBefore(LocalDate.now()))) {
                 order.setStatus(Status.COMPLETED);
-                orderHistoryRepository.save(order);
             }
+            orderHistoryRepository.save(order);
         }
     }
 
     public List<OrderHistory> findAllByUserAndStatus(User user, Status status) {
-        return (List<OrderHistory>) orderHistoryRepository.findAllByUserAndStatus(user, status, Sort.by("enterDate").descending());
+        return orderHistoryRepository.findAllByUserAndStatusAndDeleted(user, status, Sort.by("enterDate").descending(), false);
     }
 }

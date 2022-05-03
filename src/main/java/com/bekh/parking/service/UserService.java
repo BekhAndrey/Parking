@@ -32,11 +32,11 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return userRepository.findAllByDeleted(false);
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
+        return userRepository.findByIdAndDeleted(id, false  ).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public void create(User user) {
@@ -54,10 +54,11 @@ public class UserService implements UserDetailsService {
     }
 
     public void delete(User user) {
-        userRepository.delete(user);
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 
-    public List<User> findAllByRole(UserRole role) { return userRepository.findAllByRole(role);}
+    public List<User> findAllByRole(UserRole role) { return userRepository.findAllByRoleAndDeleted(role, false);}
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

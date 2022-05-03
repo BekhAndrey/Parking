@@ -26,6 +26,9 @@ public class ParkingType {
     @Column(name = "lots_amount")
     private Integer lotsAmount;
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
     @OneToMany(mappedBy = "parkingType")
     private Set<ParkingLot> parkingLots;
 }

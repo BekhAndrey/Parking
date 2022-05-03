@@ -1,9 +1,7 @@
 package com.bekh.parking.service;
 
-import com.bekh.parking.model.ParkingLot;
 import com.bekh.parking.model.ParkingType;
 import com.bekh.parking.model.VehicleType;
-import com.bekh.parking.repository.ParkingLotRepository;
 import com.bekh.parking.repository.ParkingTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +17,11 @@ public class ParkingTypeService {
     private ParkingTypeRepository parkingTypeRepository;
 
     public List<ParkingType> findAll() {
-        return (List<ParkingType>) parkingTypeRepository.findAll();
+        return parkingTypeRepository.findAllByDeleted(false);
     }
 
     public ParkingType findById(Long id) {
-        return parkingTypeRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
+        return parkingTypeRepository.findByIdAndDeleted(id, false).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find the resource"));
     }
 
     public void save(ParkingType parkingType){
@@ -31,10 +29,11 @@ public class ParkingTypeService {
     }
 
     public void delete(ParkingType parkingType) {
-        parkingTypeRepository.delete(parkingType);
+        parkingType.setDeleted(true);
+        parkingTypeRepository.save(parkingType);
     }
 
     public ParkingType findByType(VehicleType type) {
-        return parkingTypeRepository.findByType(type);
+        return parkingTypeRepository.findByTypeAndDeleted(type, false);
     }
 }

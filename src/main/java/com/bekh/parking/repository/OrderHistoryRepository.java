@@ -9,11 +9,17 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderHistoryRepository extends CrudRepository<OrderHistory, Long>, PagingAndSortingRepository<OrderHistory, Long> {
-    OrderHistory findByParkingLotId(Long id);
 
-    List<OrderHistory> findAllByUser(User user, Sort sort);
+    Optional<OrderHistory> findByIdAndDeleted(Long id, boolean isDeleted);
 
-    List<OrderHistory> findAllByUserAndStatus(User user, Status status, Sort sort);
+    List<OrderHistory> findAllByDeleted(boolean isDeleted);
+
+    Optional<OrderHistory> findByParkingLotIdAndDeleted(Long id, boolean isDeleted);
+
+    List<OrderHistory> findAllByUserAndDeleted(User user, Sort sort, boolean isDeleted);
+
+    List<OrderHistory> findAllByUserAndStatusAndDeleted(User user, Status status, Sort sort, boolean isDeleted);
 }

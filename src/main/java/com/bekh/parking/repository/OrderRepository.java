@@ -1,20 +1,22 @@
 package com.bekh.parking.repository;
 
-import com.bekh.parking.model.Order;
-import com.bekh.parking.model.ParkingLot;
-import com.bekh.parking.model.Status;
-import com.bekh.parking.model.User;
+import com.bekh.parking.model.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    List<Order> findByUser(User user);
+    Optional<Order> findByIdAndDeleted(Long id, boolean isDeleted);
 
-    List<Order> findByStatus(Status status);
+    List<Order> findAllByDeleted(boolean deleted);
 
-    Order findByParkingLot(ParkingLot parkingLot);
+    List<Order> findByUserAndDeleted(User user, boolean isDeleted);
+
+    List<Order> findByStatusAndDeleted(Status status, boolean isDeleted);
+
+    Order findByParkingLotAndDeleted(ParkingLot parkingLot, boolean isDeleted);
 }

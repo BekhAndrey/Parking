@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -28,6 +33,9 @@ public class AdminController {
     @Autowired
     private OrderHistoryService orderHistoryService;
 
+    @Autowired
+    private ParkingTypeService parkingTypeService;
+
     @GetMapping()
     public String adminPanel() {
         return "redirect:/admin/users";
@@ -37,6 +45,17 @@ public class AdminController {
     public String adminPanelUsers(Model model) {
         model.addAttribute("users", userService.findAllByRole(UserRole.ROLE_USER));
         model.addAttribute("vehicles", vehicleService.findAll());
+        List<ParkingLot> parkingLotList = parkingLotService.findAllCurrentlyParked(LocalDate.now().plusDays(1));
+        List<ParkingType> types = parkingTypeService.findAll();
+        Map<String, Integer> totalLots = new HashMap<>();
+        Map<String, Integer> availableLots = new HashMap<>();
+        for(ParkingType parkingType: types){
+            Long amount = parkingLotList.stream().filter(lot->lot.getParkingType().getType().equals(parkingType.getType())).count();
+            totalLots.put(parkingType.getType().name(), parkingType.getLotsAmount());
+            availableLots.put(parkingType.getType().name(), parkingType.getLotsAmount() - amount.intValue());
+        }
+        model.addAttribute("total", totalLots);
+        model.addAttribute("available", availableLots);
         return "admin/adminpanel";
     }
 
@@ -99,6 +118,7 @@ public class AdminController {
     public String deleteOrder(@PathVariable("id") Long id) {
         Order order = orderService.findById(id);
         orderService.delete(order);
+        orderHistoryService.delete(orderHistoryService.findByParkingLotId(order.getParkingLot().getId()));
         parkingLotService.delete(order.getParkingLot());
         return "redirect:/admin/orders";
     }

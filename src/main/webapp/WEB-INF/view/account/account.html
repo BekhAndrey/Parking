@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
-    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css" >
-    <link rel="stylesheet" th:href="@{/static/css/main.css}" id="main-css" >
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css">
+    <link rel="stylesheet" th:href="@{/static/css/main.css}" id="main-css">
     <script th:src="@{/static/js/jquery-3.6.0.js}"></script>
     <script th:src="@{/static/js/bootstrap.js}"></script>
     <script th:src="@{/static/js/functions.js}"></script>
@@ -14,7 +14,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">Parking</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -23,15 +24,18 @@
                     <a class="nav-link" aria-current="page" th:href="@{/home}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link me-auto" th:href="@{/orders}" >Current bookings</a>
+                    <a class="nav-link me-auto" th:href="@{/orders}">Current bookings</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
                         History
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{/history}">All</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/completed}">Completed</a></li>
@@ -39,7 +43,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/account}" >Account</a>
+                    <a class="nav-link active" th:href="@{/account}">Account</a>
                 </li>
             </ul>
         </div>
@@ -47,55 +51,56 @@
 </nav>
 <div class="container">
     <div class="row mt-5">
-        <aside class="col-sm-4">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
             <div class="card">
                 <header class="card-header">
                     <h4 class="card-title mt-2">Account info</h4>
                 </header>
                 <article class="card-body">
-                    <div class="col form-group">
+                    <div class="form-group">
                         <label>First name</label>
                         <h3 th:text="${currentUser.getFirstName()}"></h3>
                     </div>
-                    <div class="col form-group">
+                    <div class="form-group">
                         <label>Last name</label>
                         <h3 th:text="${currentUser.getLastName()}"></h3>
                     </div>
-                    <div class="col form-group">
+                    <div class="form-group">
                         <label>Email</label>
                         <h3 th:text="${currentUser.getEmail()}"></h3>
                     </div>
-                    <div class="col form-group">
+                    <div class="form-group">
                         <label>Created at</label>
                         <h3 th:text="${currentUser.getCreatedAt()}"></h3>
                     </div>
                 </article> <!-- card-body end .// -->
             </div> <!-- card.// -->
-        </aside> <!-- col.//-->
-        <aside class="col-sm-4">
-        <div class="card" style="max-height: 550px; overflow: auto">
-            <table class="table">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Number</th>
-                    <th scope="col">Type</th>
-                </tr>
-                </thead>
-                <tbody th:each="vehicle : ${currentUser.getVehicles()}">
-                <tr>
-                    <td th:text="${vehicle.getVehicleName()}">Name</td>
-                    <td th:text="${vehicle.getVehicleNumber()}">Name</td>
-                    <td th:text="${vehicle.getVehicleType()}">Name</td>
-                </tr>
-                </tbody>
-            </table>
-            <br>
-        </div>
+        </div> <!-- col.//-->
+        <div class="col-sm-4">
+            <div class="card" style="max-height: 550px; overflow: auto">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="vehicle : ${currentUser.getVehicles()}">
+                    <tr>
+                        <td th:text="${vehicle.getVehicleName()}">Name</td>
+                        <td th:text="${vehicle.getVehicleNumber()}">Name</td>
+                        <td th:text="${vehicle.getVehicleType()}">Name</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
             <a th:href="@{/vehicles/add}">
                 <button class="btn btn-primary btn-block">Add vehicle</button>
             </a>
-        </aside>
+        </div>
     </div> <!-- row.//-->
 </div>
 </body>
