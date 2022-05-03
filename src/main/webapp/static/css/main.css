@@ -1,0 +1,16 @@
+@import url('http://getbootstrap.com/dist/css/bootstrap.css');
+
+
+.height{
+    height: 100%;
+}
+
+html, .container{
+    min-height: 100%;
+}
+
+body {
+    height: 100%;
+    background:url('../img/background.jpg') no-repeat center center;
+    background-size:cover;
+}
