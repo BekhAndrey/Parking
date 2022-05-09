@@ -34,7 +34,7 @@ public class ParkingTypeServiceTest {
     public void shouldReturnParkingTypeList_whenFindAll_givenNothing() {
         //arrange
         List<ParkingType> parkingTypes = getParkingTypes();
-        given(parkingTypeRepository.findAll()).willReturn(parkingTypes);
+        given(parkingTypeRepository.findAllByDeleted(false)).willReturn(parkingTypes);
         //act
         List<ParkingType> actual = parkingTypeService.findAll();
         //assert
@@ -46,7 +46,7 @@ public class ParkingTypeServiceTest {
     public void shouldReturnParkingType_whenFindById_givenId() {
         //arrange
         ParkingType parkingType = getParkingType();
-        given(parkingTypeRepository.findById(1L)).willReturn(Optional.of(parkingType));
+        given(parkingTypeRepository.findByIdAndDeleted(1L, false)).willReturn(Optional.of(parkingType));
         //act
         ParkingType actual = parkingTypeService.findById(1L);
         //assert

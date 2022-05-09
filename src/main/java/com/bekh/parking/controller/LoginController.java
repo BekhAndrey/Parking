@@ -6,6 +6,7 @@ import com.bekh.parking.model.User;
 import com.bekh.parking.service.EmailService;
 import com.bekh.parking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,6 +16,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.validation.Valid;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -28,6 +30,9 @@ public class LoginController {
 
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private MessageSource messageSource;
 
     private static final String CONFIRM_EMAIL_SUBJECT = "Confirm your email address";
     private static final String CONFIRM_EMAIL_MESSAGE = "Use this code to confirm your email:\n";
@@ -48,12 +53,12 @@ public class LoginController {
     }
 
     @PostMapping("/registration")
-    public String processSignUp(@Valid User user, Errors errors) {
+    public String processSignUp(@Valid User user, Errors errors, Locale locale) {
         if (userService.findUserByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "email.notUnique", "This email is already in use.");
+            errors.rejectValue("email", "email.notUnique", messageSource.getMessage("signUp.error.email.inUse", new Object[]{}, locale));
         }
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            errors.rejectValue("confirmPassword", "confirmPassword.dontMatch", "Passwords dont match.");
+            errors.rejectValue("confirmPassword", "confirmPassword.dontMatch", messageSource.getMessage("signUp.error.confirm", new Object[]{}, locale));
         }
         if (errors.hasErrors()) {
             return "credentials/signup";

@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css" >
-    <link rel="stylesheet" th:href="@{/static/css/main.css}" id="main-css" >
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css">
+    <link rel="stylesheet" th:href="@{/static/css/main.css}" id="main-css">
     <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script th:src="@{/static/js/bootstrap.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"></link>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"></link>
     <script th:src="@{/static/js/functions.js}"></script>
 </head>
-<body class="bg-image">
+<body class="img-empty-parking">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">Parking</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -24,15 +27,18 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link me-auto" th:href="@{/orders}" >Current bookings</a>
+                    <a class="nav-link me-auto" th:href="@{/orders}">Current bookings</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
                         History
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{/history}">All</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li><a class="dropdown-item" th:href="@{/history/reserved}">Reserved</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/ongoing}">Ongoing</a></li>
                         <li><a class="dropdown-item" th:href="@{/history/completed}">Completed</a></li>
@@ -40,7 +46,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/account}" >Account</a>
+                    <a class="nav-link" th:href="@{/account}">Account</a>
                 </li>
             </ul>
         </div>
@@ -60,7 +66,8 @@
                             <div class="col form-group">
                                 <label>Enter date </label>
                                 <div class="input-group date">
-                                    <input type="text" autocomplete="off" class="form-control enterdatepicker" th:field="*{enterDate}">
+                                    <input type="text" autocomplete="off" class="form-control enterdatepicker"
+                                           th:field="*{enterDate}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -70,7 +77,8 @@
                                 </div>
                                 <label>Exit date </label>
                                 <div class="input-group date">
-                                    <input type="text" autocomplete="off" class="form-control exitdatepicker" th:field="*{exitDate}">
+                                    <input type="text" autocomplete="off" class="form-control exitdatepicker"
+                                           th:field="*{exitDate}">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
@@ -79,21 +87,26 @@
                                      th:errors="*{exitDate}">Exit Date error
                                 </div>
                                 <label>Car number</label>
-                                <select th:if="${cars.size() > 0}" class="form-select" aria-label="Default select example"
-                                                        name="carNumber">
+                                <select th:if="${cars.size() > 0}" class="form-select"
+                                        aria-label="Default select example"
+                                        name="carNumber">
                                     <option th:each="car : ${cars}"
                                             th:value="${car.getVehicleNumber()}"
                                             th:text="${car.getVehicleNumber()}"></option>
                                 </select>
-                                <a th:href="@{/vehicles/add}" th:if="${cars.size()<1}">
-                                    <br>
-                                    <button class="btn btn-primary btn-block" type="button">Add vehicle</button>
-                                </a>
+                                <div class="border-top card-body">
+                                    <a th:href="@{/vehicles/add}" th:if="${cars.size()<1}">
+                                        <button class="btn btn-primary btn-block" type="button"><i
+                                                class="bi bi-plus"></i> Add vehicle
+                                        </button>
+                                    </a>
+                                </div>
                             </div> <!-- form-group end.// -->
                         </div> <!-- form-row end.// -->
-                        <br>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" th:if="${cars.size()>0}"> Reserve</button>
+                        <div class="form-group border-top card-body">
+                            <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-plus"></i> Reserve
+                                parking lot
+                            </button>
                         </div> <!-- form-group// -->
                     </form>
                 </article>
@@ -101,7 +114,25 @@
 
             <!--        </aside> &lt;!&ndash; col.// &ndash;&gt;-->
         </div> <!-- row.// -->
-
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Booking within few clicks</div>
+                <div class="card-body">
+                    <p class="card-text">Reserve a parking lot for your vehicle in just few clicks.</p>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Parking is available for the following vehicles</h5>
+                    <ul>
+                        <th:block th:each="type : ${T(com.bekh.parking.model.VehicleType).values()}">
+                            <li th:utext="${type}" class="text-lowercase"></li>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

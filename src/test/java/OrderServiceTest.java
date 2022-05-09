@@ -37,7 +37,7 @@ public class OrderServiceTest {
     public void shouldReturnOrderList_whenFindAll_givenNothing() {
         //arrange
         List<Order> orders = getOrders();
-        given(orderRepository.findAll()).willReturn(orders);
+        given(orderRepository.findAllByDeleted(false)).willReturn(orders);
         //act
         List<Order> actual = orderService.findAll();
         //assert
@@ -49,7 +49,7 @@ public class OrderServiceTest {
     public void shouldReturnOrder_whenFindById_givenId() {
         //arrange
         Order order = getOrder();
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.findByIdAndDeleted(1L, false)).willReturn(Optional.of(order));
         //act
         Order actual = orderService.findById(1L);
         //assert

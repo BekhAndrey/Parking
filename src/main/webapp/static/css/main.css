@@ -14,3 +14,21 @@ body {
     background:url('../img/background.jpg') no-repeat center center;
     background-size:cover;
 }
+
+.img-empty-parking {
+    height: 100%;
+    background:url('../img/empty-parking-2.png') no-repeat center center;
+    background-size:cover;
+}
+
+.img-filled-parking {
+    height: 100%;
+    background:url('../img/filled-parking.jpg') no-repeat center center;
+    background-size:cover;
+}
+
+.img-account {
+    height: 100%;
+    background:url('../img/account-img.jpg') no-repeat center center;
+    background-size:cover;
+}

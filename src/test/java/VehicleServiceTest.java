@@ -34,7 +34,7 @@ public class VehicleServiceTest {
     public void shouldReturnVehicles_whenFindAll_givenNothing() {
         //arrange
         List<Vehicle> vehicles = getVehicles();
-        given(vehicleRepository.findAll()).willReturn(vehicles);
+        given(vehicleRepository.findAllByDeleted(false)).willReturn(vehicles);
         //act
         List<Vehicle> actual = vehicleService.findAll();
         //assert
@@ -46,7 +46,7 @@ public class VehicleServiceTest {
     public void shouldReturnVehicle_whenFindById_givenId() {
         //arrange
         Vehicle vehicle = getVehicle();
-        given(vehicleRepository.findById(1L)).willReturn(Optional.of(vehicle));
+        given(vehicleRepository.findByIdAndDeleted(1L, false)).willReturn(Optional.of(vehicle));
         //act
         Vehicle actual = vehicleService.findById(1L);
         //assert

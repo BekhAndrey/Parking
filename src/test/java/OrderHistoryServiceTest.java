@@ -37,7 +37,7 @@ public class OrderHistoryServiceTest {
     public void shouldReturnOrderHistoryList_whenFindAll_givenNothing() {
         //arrange
         List<OrderHistory> orderHistories = getOrderHistories();
-        given(orderHistoryRepository.findAll()).willReturn(orderHistories);
+        given(orderHistoryRepository.findAllByDeleted(false)).willReturn(orderHistories);
         //act
         List<OrderHistory> actual = orderHistoryService.findAll();
         //assert
@@ -49,7 +49,7 @@ public class OrderHistoryServiceTest {
     public void shouldReturnOrderHistory_whenFindById_givenId() {
         //arrange
         OrderHistory orderHistory = getOrderHistory();
-        given(orderHistoryRepository.findById(1L)).willReturn(Optional.of(orderHistory));
+        given(orderHistoryRepository.findByIdAndDeleted(1L, false)).willReturn(Optional.of(orderHistory));
         //act
         OrderHistory actual = orderHistoryService.findById(1L);
         //assert

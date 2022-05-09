@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
     <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}" id="bootstrap-css">
     <link rel="stylesheet" th:href="@{/static/css/main.css}" id="main-css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script th:src="@{/static/js/jquery-3.6.0.js}"></script>
     <script th:src="@{/static/js/bootstrap.js}"></script>
     <script th:src="@{/static/js/functions.js}"></script>
 </head>
-<body>
+<body class="img-account">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/home}">Parking</a>
@@ -95,11 +95,11 @@
                     </tr>
                     </tbody>
                 </table>
-                <br>
+                <div class="border-top card-body text-center">
+                    <a class="btn btn-primary" role="button" th:href="@{/vehicles/add}"><i class="bi bi-plus"></i> Add vehicle</a>
+                    <a class="btn btn-primary" role="button" th:href="@{/home}"><i class="bi bi-plus"></i> Reserve parking lot</a>
+                </div>
             </div>
-            <a th:href="@{/vehicles/add}">
-                <button class="btn btn-primary btn-block">Add vehicle</button>
-            </a>
         </div>
     </div> <!-- row.//-->
 </div>
