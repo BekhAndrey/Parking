@@ -3,6 +3,7 @@ package com.bekh.parking.controller;
 import com.bekh.parking.model.*;
 import com.bekh.parking.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Locale;
 
 
 @Controller
@@ -20,6 +22,9 @@ public class HomeController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping("/home")
     public String homePage(Authentication authentication, Model model) {
@@ -43,10 +48,10 @@ public class HomeController {
     }
 
     @PostMapping("/vehicles/add")
-    public String addVehicle(@Valid Vehicle vehicle, Errors errors, Authentication authentication) {
+    public String addVehicle(@Valid Vehicle vehicle, Errors errors, Authentication authentication, Locale locale) {
         if (vehicleService.findByVehicleNumber(vehicle.getVehicleNumber()) != null) {
             errors.rejectValue("vehicleNumber", "vehicleNumber.notUnique",
-                    "Vehicle with such number already exists.");
+                    messageSource.getMessage("vehicle.exists", new Object[]{}, locale));
         }
         if (errors.hasErrors()) {
             return "vehicle/addvehicle";

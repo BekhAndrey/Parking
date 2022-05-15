@@ -31,22 +31,34 @@
                     <a class="nav-link" th:href="@{/admin/history}" aria-current="page">History</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
 <div class="container">
     <div class="row mt-5">
             <div class="card" style="max-height: 550px; overflow: auto">
-                <header class="card-header">Bookings</header>
+                <header class="card-header" th:text="#{bookings}">Bookings</header>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">User email</th>
-                        <th scope="col">Vehicle number</th>
-                        <th scope="col">Enter date</th>
-                        <th scope="col">Exit date</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
+                        <th scope="col" th:text="#{user}">User email</th>
+                        <th scope="col" th:text="#{admin.order.number}">Vehicle number</th>
+                        <th scope="col" th:text="#{admin.order.enterDate}">Enter date</th>
+                        <th scope="col" th:text="#{admin.order.exitDate}">Exit date</th>
+                        <th scope="col" th:text="#{admin.order.price}">Price</th>
+                        <th scope="col" th:text="#{admin.order.status}">Status</th>
                         <th scope="col"></th>
                         <!--                        <th scope="col"></th>-->
                     </tr>
@@ -61,7 +73,10 @@
                         <td th:text="${order.getStatus()}">Status</td>
                         <td>
                             <a th:href="@{/admin/orders/{id}/delete(id=${order.getId()})}">
-                                <button type="button" class="btn btn-primary btn-block"><i class="bi bi-trash"></i> Delete</button>
+                                <button type="button" class="btn btn-primary btn-block">
+                                    <i class="bi bi-trash font-weight-normal"></i>
+                                    <span th:text="#{button.delete}"> Delete</span>
+                                </button>
                             </a>
                         </td>
                     </tr>

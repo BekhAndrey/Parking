@@ -31,6 +31,18 @@
                     <a class="nav-link" th:href="@{/admin/history}" aria-current="page">History</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -39,15 +51,15 @@
         <aside class="col-sm-6">
             <div class="card" style="max-height: 550px; overflow: auto">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Users</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{users}">Users</h4>
                 </header>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">First name</th>
-                        <th scope="col">Last name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Approved</th>
+                        <th scope="col" th:text="#{user.firstName}">First name</th>
+                        <th scope="col" th:text="#{user.lastName}">Last name</th>
+                        <th scope="col" th:text="#{user.email}">Email</th>
+                        <th scope="col" th:text="#{user.approved}">Approved</th>
                         <th scope="col"></th>
                         <!--                        <th scope="col"></th>-->
                     </tr>
@@ -63,7 +75,10 @@
                         <!--                        </a>-->
                         <td>
                             <a th:href="@{/admin/users/{id}/delete(id=${user.getId()})}">
-                                <button type="button" class="btn btn-primary btn-block"><i class="bi bi-trash"></i> Delete</button>
+                                <button type="button" class="btn btn-primary btn-block">
+                                    <i class="bi bi-trash font-weight-normal"></i>
+                                    <span th:text="#{button.delete}"> Delete</span>
+                                </button>
                             </a>
                         </td>
                     </tr>
@@ -74,14 +89,14 @@
             <br>
             <div class="card" style="max-height: 550px; overflow: auto">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Available lots</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{parkingLot.available}">Available lots</h4>
                 </header>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Vehicle type</th>
-                        <th scope="col">Available lots</th>
-                        <th scope="col">Total lots</th>
+                        <th scope="col" th:text="#{parkingLot.vehicleType}">Vehicle type</th>
+                        <th scope="col" th:text="#{parkingLot.available}">Available lots</th>
+                        <th scope="col" th:text="#{parkingLot.total}">Total lots</th>
                         <th scope="col"></th>
                         <!--                        <th scope="col"></th>-->
                     </tr>
@@ -100,14 +115,14 @@
         <aside class="col-sm-6">
             <div class="card" style="max-height: 550px; overflow: auto">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Vehicles</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{vehicles}">Vehicles</h4>
                 </header>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">User email</th>
+                        <th scope="col" th:text="#{vehicle.type}">Type</th>
+                        <th scope="col" th:text="#{vehicle.number}">Number</th>
+                        <th scope="col" th:text="#{user}">User email</th>
                         <th scope="col"></th>
                         <!--                        <th scope="col"></th>-->
                     </tr>
@@ -117,12 +132,12 @@
                         <td th:text="${vehicle.getVehicleType()}">Type</td>
                         <td th:text="${vehicle.getVehicleNumber()}">Number</td>
                         <td th:text="${vehicle.getOwner().getEmail()}">Email</td>
-                        <!--                        <a th:href="@{/home}">-->
-                        <!--                            <button type="button" class="btn btn-primary btn-block"> Edit</button>-->
-                        <!--                        </a>-->
                         <td>
                             <a th:href="@{/admin/vehicles/{id}/delete(id=${vehicle.getId()})}">
-                                <button type="button" class="btn btn-primary btn-block"><i class="bi bi-trash"></i> Delete</button>
+                                <button type="button" class="btn btn-primary btn-block">
+                                    <i class="bi bi-trash font-weight-normal"></i>
+                                    <span th:text="#{button.delete}"> Delete</span>
+                                </button>
                             </a>
                         </td>
                     </tr>
@@ -131,32 +146,6 @@
                 <br>
             </div>
         </aside>
-<!--        <aside class="col-sm-6">-->
-<!--            <div class="card" style="max-height: 550px; overflow: auto">-->
-<!--                <header class="card-header">-->
-<!--                    <h4 class="card-title mb-4 mt-1">Available lots</h4>-->
-<!--                </header>-->
-<!--                <table class="table">-->
-<!--                    <thead class="thead-dark">-->
-<!--                    <tr>-->
-<!--                        <th scope="col">Vehicle type</th>-->
-<!--                        <th scope="col">Available lots</th>-->
-<!--                        <th scope="col">Total lots</th>-->
-<!--                        <th scope="col"></th>-->
-<!--                        &lt;!&ndash;                        <th scope="col"></th>&ndash;&gt;-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody th:each="type : ${total.keySet()}">-->
-<!--                    <tr>-->
-<!--                        <td th:text="${type}">Type</td>-->
-<!--                        <td th:text="${available.get(type)}" th:style="${available.get(type) < (total.get(type)*0.4)}?'color:red':'color:green'">Available</td>-->
-<!--                        <td style="color: green" th:text="${total.get(type)}">Total</td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
-<!--                <br>-->
-<!--            </div>-->
-<!--        </aside>-->
     </div> <!-- row.//-->
 </div>
 </body>

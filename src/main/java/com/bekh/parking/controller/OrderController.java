@@ -3,6 +3,7 @@ package com.bekh.parking.controller;
 import com.bekh.parking.model.*;
 import com.bekh.parking.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -39,17 +41,20 @@ public class OrderController {
     @Autowired
     private OrderHistoryService orderHistoryService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @PostMapping("/add")
     public String createParkingLot(Authentication authentication, @Valid ParkingLot parkingLot,
-                                   Errors errors, String carNumber, Model model) {
+                                   Errors errors, String carNumber, Model model, Locale locale) {
         if(parkingLot.getEnterDate()==null){
-            errors.rejectValue("enterDate", "null", "Enter date cannot be empty.");
+            errors.rejectValue("enterDate", "null", messageSource.getMessage("enterDate.error.empty", new Object[]{}, locale));
             model.addAttribute("cars",
                     vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
             return "order/mainpage";
         }
         if(parkingLot.getExitDate()==null){
-            errors.rejectValue("exitDate", "null", "Exit date cannot be empty.");
+            errors.rejectValue("exitDate", "null", messageSource.getMessage("exitDate.error.empty", new Object[]{}, locale));
             model.addAttribute("cars",
                     vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
             return "order/mainpage";
@@ -57,7 +62,7 @@ public class OrderController {
         double multiplier = 0;
         Vehicle vehicleToPark = vehicleService.findByVehicleNumber(carNumber);
         if (parkingLot.getEnterDate().isAfter(parkingLot.getExitDate())) {
-            errors.rejectValue("enterDate", "isAfter", "Enter date cannot be after exit date.");
+            errors.rejectValue("enterDate", "isAfter", messageSource.getMessage("enterDate.error.afterExit", new Object[]{}, locale));
             model.addAttribute("cars",
                     vehicleService.findAllByOwnerId(userService.findUserByEmail(authentication.getName()).getId()));
             return "order/mainpage";
@@ -67,11 +72,11 @@ public class OrderController {
              date = date.plusDays(1)) {
             if (parkingLotService.findAllCurrentlyParked(date)
                     .size() > parkingTypeService.findByType(vehicleToPark.getVehicleType()).getLotsAmount()) {
-                errors.rejectValue("enterDate", "noLots", "No parking lots available for this period.");
+                errors.rejectValue("enterDate", "noLots", messageSource.getMessage("parkingLot.error.noAvailable", new Object[]{}, locale));
             }
             if (parkingLotService.findCurrentlyParkedByVehicleNumber(date, carNumber).size() > 0) {
                 errors.rejectValue("enterDate", "exists",
-                        "There is another booking for this car during this period.");
+                        messageSource.getMessage("enterDate.error.anotherBooking", new Object[]{}, locale));
             }
             if (errors.hasErrors()) {
                 model.addAttribute("cars",
@@ -159,11 +164,11 @@ public class OrderController {
 
     @PostMapping("/{id}/edit/confirm")
     public String confirmEdit(@PathVariable("id") Long id, @Valid ParkingLot parkingLot,
-                              Errors errors, String carNumber, Model model) {
+                              Errors errors, String carNumber, Model model, Locale locale) {
         double multiplier = 0;
         Vehicle vehicleToPark = vehicleService.findByVehicleNumber(carNumber);
         if (parkingLot.getEnterDate().isAfter(parkingLot.getExitDate())) {
-            errors.rejectValue("enterDate", "isAfter", "Enter date cannot be after exit date.");
+            errors.rejectValue("enterDate", "isAfter", messageSource.getMessage("enterDate.error.afterExit", new Object[]{}, locale));
             model.addAttribute("car",
                     vehicleToPark);
             return "order/editorder";
@@ -171,14 +176,14 @@ public class OrderController {
         for (LocalDate date = parkingLot.getEnterDate(); date.isBefore(parkingLot.getExitDate().plusDays(1)); date = date.plusDays(1)) {
             List<ParkingLot> lots = parkingLotService.findCurrentlyParkedByVehicleNumber(date, carNumber);
             if (lots.size() > 0 && !lots.get(0).getId().equals(parkingLot.getId())) {
-                errors.rejectValue("enterDate", "exists", "There is another booking for this car during this period.");
+                errors.rejectValue("enterDate", "exists", messageSource.getMessage("enterDate.error.anotherBooking", new Object[]{}, locale));
                 model.addAttribute("car",
                         vehicleToPark);
                 return "order/editorder";
             }
             if (parkingLotService.findAllCurrentlyParked(date)
                     .size() > parkingTypeService.findByType(vehicleToPark.getVehicleType()).getLotsAmount()) {
-                errors.rejectValue("enterDate", "noLots", "No parking lots available for this period.");
+                errors.rejectValue("enterDate", "noLots", messageSource.getMessage("parkingLot.error.noAvailable", new Object[]{}, locale));
                 model.addAttribute("car",
                         vehicleToPark);
                 return "order/editorder";

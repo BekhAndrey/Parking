@@ -41,6 +41,18 @@
                     <a class="nav-link" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -50,15 +62,15 @@
             <!--        <aside class="col-sm-3">-->
             <div class="card">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Confirm booking</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{booking.confirm}">Confirm booking</h4>
                 </header>
                 <article class="card-body">
                     <form th:method="put" th:action="@{/orders/{id}/edit(id=${id})}" th:object="${parkingLot}">
                         <div class="form-row">
                             <div class="col form-group">
-                                <h3>Order info</h3>
+                                <h3 th:text="#{order.info}">Order info</h3>
                                 <input type="text" class="form-control" hidden="hidden" th:field="*{id}">
-                                <label>Enter date </label>
+                                <label th:text="#{admin.order.enterDate}">Enter date </label>
                                 <div class="input-group date">
                                     <label th:text="*{enterDate}"></label>
                                     <input type="text" class="form-control" hidden="hidden" th:field="*{enterDate}">
@@ -66,7 +78,7 @@
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
-                                <label>Exit date </label>
+                                <label th:text="#{admin.order.exitDate}">Exit date </label>
                                 <div class="input-group date">
                                     <label th:text="*{exitDate}"></label>
                                     <input type="text" class="form-control" hidden="hidden" th:field="*{exitDate}">
@@ -74,7 +86,7 @@
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
-                                <label>Car number</label>
+                                <label th:text="#{admin.order.number}">Car number</label>
                                 <div class="input-group date">
                                     <label th:text="*{vehicle.getVehicleNumber()}"></label>
                                     <input type="text" class="form-control" hidden="hidden" th:value="*{vehicle.getVehicleNumber()}" name="vehicleNumber">
@@ -82,7 +94,7 @@
                                         <span class="glyphicon glyphicon-th"></span>
                                     </div>
                                 </div>
-                                <label>Price</label>
+                                <label th:text="#{admin.order.price}">Price</label>
                                 <div class="input-group date">
                                     <label  th:text="${price}"></label>
                                     <input type="text" class="form-control" hidden="hidden" th:value="${price}" name="price">
@@ -94,9 +106,12 @@
                         </div> <!-- form-row end.// -->
                         <br>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-pen"></i> Edit</button>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="bi bi-pen"></i>
+                                <span th:text="#{button.edit}"></span>
+                            </button>
                             <a th:href="@{/home}">
-                                <button type="button" class="btn btn-secondary btn-block"> Cancel</button>
+                                <button type="button" class="btn btn-secondary btn-block" th:text="#{button.cancel}"> Cancel</button>
                             </a>
                         </div> <!-- form-group// -->
                     </form>

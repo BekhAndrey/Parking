@@ -46,6 +46,18 @@
                     <a class="nav-link active" th:href="@{/account}">Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -55,23 +67,23 @@
         <div class="col-sm-4">
             <div class="card">
                 <header class="card-header">
-                    <h4 class="card-title mt-2">Account info</h4>
+                    <h4 class="card-title mt-2" th:text="#{account.info}">Account info</h4>
                 </header>
                 <article class="card-body">
                     <div class="form-group">
-                        <label>First name</label>
+                        <label th:text="#{account.firstName}">First name</label>
                         <h3 th:text="${currentUser.getFirstName()}"></h3>
                     </div>
                     <div class="form-group">
-                        <label>Last name</label>
+                        <label th:text="#{account.lastName}">Last name</label>
                         <h3 th:text="${currentUser.getLastName()}"></h3>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
+                        <label th:text="#{account.email}">Email</label>
                         <h3 th:text="${currentUser.getEmail()}"></h3>
                     </div>
                     <div class="form-group">
-                        <label>Created at</label>
+                        <label th:text="#{account.createdAd}">Created at</label>
                         <h3 th:text="${currentUser.getCreatedAt()}"></h3>
                     </div>
                 </article> <!-- card-body end .// -->
@@ -82,9 +94,9 @@
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Number</th>
-                        <th scope="col">Type</th>
+                        <th scope="col" th:text="#{vehicle.name}">Name</th>
+                        <th scope="col" th:text="#{vehicle.number}">Number</th>
+                        <th scope="col" th:text="#{vehicle.type}">Type</th>
                     </tr>
                     </thead>
                     <tbody th:each="vehicle : ${currentUser.getVehicles()}">
@@ -96,8 +108,8 @@
                     </tbody>
                 </table>
                 <div class="border-top card-body text-center">
-                    <a class="btn btn-primary" role="button" th:href="@{/vehicles/add}"><i class="bi bi-plus"></i> Add vehicle</a>
-                    <a class="btn btn-primary" role="button" th:href="@{/home}"><i class="bi bi-plus"></i> Reserve parking lot</a>
+                    <a class="btn btn-primary" role="button" th:href="@{/vehicles/add}"><i class="bi bi-plus"></i> <span th:text="#{vehicle.add}"> Add vehicle</span></a>
+                    <a class="btn btn-primary" role="button" th:href="@{/home}"><i class="bi bi-plus"></i> <span th:text="#{parkingLot.reserve}"> Reserve parking lot</span></a>
                 </div>
             </div>
         </div>

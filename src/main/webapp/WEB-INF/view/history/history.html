@@ -44,6 +44,18 @@
                     <a class="nav-link" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -51,19 +63,19 @@
     <div class="row mt-5">
         <div class="card" style="max-height: 550px; overflow: auto">
             <header class="card-header">
-                <h4 class="card-title mb-4 mt-1">History</h4>
+                <h4 class="card-title mb-4 mt-1" th:text="#{history}">History</h4>
             </header>
-            <h5 class="card-title mb-4 mt-1" th:text="${status} eq null? 'All bookings' : ${status} + ' bookings'">History</h5>
+            <h5 class="card-title mb-4 mt-1" th:text="${status} eq null? #{allBookings} : ${status} + ' ' + #{bookings}">History</h5>
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Vehicle Number</th>
-                    <th scope="col">Vehicle Type</th>
-                    <th scope="col">Parking lot id</th>
-                    <th scope="col">Enter date</th>
-                    <th scope="col">Exit date</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Status</th>
+                    <th scope="col" th:text="#{admin.order.number}">Vehicle Number</th>
+                    <th scope="col" th:text="#{parkingLot.vehicleType}">Vehicle Type</th>
+                    <th scope="col" th:text="#{parkingLot.id}">Parking lot id</th>
+                    <th scope="col" th:text="#{admin.order.enterDate}">Enter date</th>
+                    <th scope="col" th:text="#{admin.order.exitDate}">Exit date</th>
+                    <th scope="col" th:text="#{admin.order.price}">Price</th>
+                    <th scope="col" th:text="#{admin.order.status}">Status</th>
                 </tr>
                 </thead>
                 <tbody th:each="order : ${ordersHistory}">

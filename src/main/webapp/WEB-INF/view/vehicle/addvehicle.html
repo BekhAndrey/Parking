@@ -42,6 +42,18 @@
                     <a class="nav-link active" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -51,27 +63,27 @@
             <!--        <aside class="col-sm-3">-->
             <div class="card">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Add vehicle</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{vehicle.add}">Add vehicle</h4>
                 </header>
                 <article class="card-body">
                     <form method="post" th:action="@{/vehicles/add}" th:object="${vehicle}">
                         <div class="form-row">
                             <div class="col form-group">
-                                <label>Name </label>
+                                <label th:text="#{vehicle.name}">Name </label>
                                 <input type="text" class="form-control" th:field="*{vehicleName}">
                                 <div style="color: red" th:if="${#fields.hasErrors('vehicleName')}"
                                      th:errors="*{vehicleName}">Vehicle Name error
                                 </div>
                             </div> <!-- form-group end.// -->
                             <div class="col form-group">
-                                <label>Number </label>
+                                <label th:text="#{vehicle.number}">Number </label>
                                 <input type="text" class="form-control" th:field="*{vehicleNumber}">
                                 <div style="color: red" th:if="${#fields.hasErrors('vehicleNumber')}"
                                      th:errors="*{vehicleNumber}">Vehicle Name error
                                 </div>
                             </div>
                             <div class="col form-group">
-                                <label>Type</label>
+                                <label th:text="#{vehicle.type}">Type</label>
                                 <select class="form-select" aria-label="Default select example"
                                         th:field="*{vehicleType}">
                                     <option th:each="type : ${T(com.bekh.parking.model.VehicleType).values()}"
@@ -82,7 +94,7 @@
                         </div> <!-- form-row end.// -->
                         <div class="form-group">
                             <br>
-                            <button type="submit" class="btn btn-primary btn-block"> Add vehicle</button>
+                            <button type="submit" class="btn btn-primary btn-block" th:text="#{vehicle.add}"> Add vehicle</button>
                         </div> <!-- form-group// -->
                     </form>
                 </article>

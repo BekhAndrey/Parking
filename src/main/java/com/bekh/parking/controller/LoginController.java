@@ -119,14 +119,14 @@ public class LoginController {
     }
 
     @PostMapping("auth/reset")
-    public String resetPassword(@Valid ResetForm resetForm, Errors errors) {
+    public String resetPassword(@Valid ResetForm resetForm, Errors errors, Locale locale) {
         if (!resetForm.getNewPassword().equals(resetForm.getConfirmNewPassword())) {
-            errors.rejectValue("confirmNewPassword", "passwords.dontMatch", "Passwords dont match.");
+            errors.rejectValue("confirmNewPassword", "passwords.dontMatch", messageSource.getMessage("signUp.error.confirm", new Object[]{}, locale));
         }
         String email;
         try (Jedis jedis = jedisPool.getResource()) {
             if (jedis.get(resetForm.getCode()) == null) {
-                errors.rejectValue("code", "code.notFound", "This code does not exist.");
+                errors.rejectValue("code", "code.notFound", messageSource.getMessage("code.wrong", new Object[]{}, locale));
             }
             email = jedis.get(resetForm.getCode());
             jedis.del(resetForm.getCode());

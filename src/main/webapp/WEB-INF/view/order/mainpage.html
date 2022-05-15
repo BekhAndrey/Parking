@@ -49,6 +49,18 @@
                     <a class="nav-link" th:href="@{/account}">Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -58,13 +70,13 @@
             <!--        <aside class="col-sm-3">-->
             <div class="card">
                 <header class="card-header">
-                    <h4 class="card-title mb-4 mt-1">Reserve parking place</h4>
+                    <h4 class="card-title mb-4 mt-1" th:text="#{parkingLot.reserve}">Reserve parking place</h4>
                 </header>
                 <article class="card-body">
                     <form method="post" th:action="@{/orders/add}" th:object="${parkingLot}">
                         <div class="form-row">
                             <div class="col form-group">
-                                <label>Enter date </label>
+                                <label th:text="#{admin.order.enterDate}">Enter date </label>
                                 <div class="input-group date">
                                     <input type="text" autocomplete="off" class="form-control enterdatepicker"
                                            th:field="*{enterDate}">
@@ -75,7 +87,7 @@
                                 <div style="color: red" th:if="${#fields.hasErrors('enterDate')}"
                                      th:errors="*{enterDate}">Enter Date error
                                 </div>
-                                <label>Exit date </label>
+                                <label th:text="#{admin.order.exitDate}">Exit date </label>
                                 <div class="input-group date">
                                     <input type="text" autocomplete="off" class="form-control exitdatepicker"
                                            th:field="*{exitDate}">
@@ -86,7 +98,7 @@
                                 <div style="color: red" th:if="${#fields.hasErrors('exitDate')}"
                                      th:errors="*{exitDate}">Exit Date error
                                 </div>
-                                <label>Car number</label>
+                                <label th:text="#{admin.order.number}">Car number</label>
                                 <select th:if="${cars.size() > 0}" class="form-select"
                                         aria-label="Default select example"
                                         name="carNumber">
@@ -104,8 +116,9 @@
                             </div> <!-- form-group end.// -->
                         </div> <!-- form-row end.// -->
                         <div class="form-group border-top card-body">
-                            <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-plus"></i> Reserve
-                                parking lot
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="bi bi-plus"></i>
+                                <span th:text="#{parkingLot.reserve}"> Reserve parking lot</span>
                             </button>
                         </div> <!-- form-group// -->
                     </form>
@@ -116,15 +129,15 @@
         </div> <!-- row.// -->
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header">Booking within few clicks</div>
+                <div class="card-header" th:text="#{booking.info.title}">Booking within few clicks</div>
                 <div class="card-body">
-                    <p class="card-text">Reserve a parking lot for your vehicle in just few clicks.</p>
+                    <p class="card-text" th:text="#{booking.info.body}">Reserve a parking lot for your vehicle in just few clicks.</p>
                 </div>
             </div>
             <br>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Parking is available for the following vehicles</h5>
+                    <h5 class="card-title" th:text="#{parkingType.available}">Parking is available for the following vehicles</h5>
                     <ul>
                         <th:block th:each="type : ${T(com.bekh.parking.model.VehicleType).values()}">
                             <li th:utext="${type}" class="text-lowercase"></li>

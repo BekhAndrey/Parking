@@ -44,6 +44,18 @@
                     <a class="nav-link" th:href="@{/account}" >Account</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Language
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownLang">
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=en)}">EN</a></li>
+                        <li><a class="dropdown-item" th:with="currentUrl=(${#httpServletRequest.requestURI})" th:href="@{''(lang=ru)}">RU</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -56,43 +68,45 @@
                 </header>
                 <article class="card-body">
                     <div class="col form-group">
-                        <label>Order id</label>
+                        <label th:text="#{order.id}">Order id</label>
                         <h3 th:text="${order.getId()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>User email</label>
+                        <label th:text="#{user}">User email</label>
                         <h3 th:text="${order.getUser().getEmail()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Vehicle number</label>
+                        <label th:text="#{admin.order.number}">Vehicle number</label>
                         <h3 th:text="${order.getParkingLot().getVehicle().getVehicleNumber()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Vehicle type</label>
+                        <label th:text="#{admin.order.type}">Vehicle type</label>
                         <h3 th:text="${order.getParkingLot().getVehicle().getVehicleType()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Enter date</label>
+                        <label th:text="#{admin.order.enterDate}">Enter date</label>
                         <h3 th:text="${order.getParkingLot().getEnterDate()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Exit date</label>
+                        <label th:text="#{admin.order.exitDate}">Exit date</label>
                         <h3 th:text="${order.getParkingLot().getExitDate()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Price</label>
+                        <label th:text="#{admin.order.price}">Price</label>
                         <h3 th:text="${order.getPrice()}"></h3>
                     </div>
                     <div class="col form-group">
-                        <label>Status</label>
+                        <label th:text="#{admin.order.status}">Status</label>
                         <h3 th:text="${order.getStatus()}"></h3>
                     </div>
                     <div class="col form-group">
                         <a class="btn btn-primary" role="button" th:href="@{/orders/{orderId}/edit(orderId=${order.getId()})}" th:if="${order.getStatus() eq T(com.bekh.parking.model.Status).RESERVED}">
-                            <i class="bi bi-pen"></i> Edit
+                            <i class="bi bi-pen"></i>
+                            <span th:text="#{button.edit}"></span>
                         </a>
                         <a class="btn btn-secondary" role="button" th:href="@{/orders/{orderId}/cancel(orderId=${order.getId()})}" th:if="${order.getStatus() eq T(com.bekh.parking.model.Status).RESERVED}">
-                            <i class="bi bi-trash"></i> Cancel
+                            <i class="bi bi-trash"></i>
+                            <span th:text="#{button.cancel}"></span>
                         </a>
                     </div>
                 </article> <!-- card-body end .// -->
